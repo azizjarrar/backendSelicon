@@ -4,6 +4,7 @@ const bodyparser = require("body-parser");
 const app = express();
 const morgan = require("morgan");
 const ENV = require('dotenv')
+const jwt = require('jsonwebtoken');
 ENV.config();
 const tier_route = require('./api/routes/tier')
 const items = require('./api/routes/items')
@@ -38,12 +39,17 @@ mongoose.connect(
     app.use("/tier", tier_route);
     app.use("/items",items)
     app.use('/uploads/Medias',express.static('./uploads/Medias'))
-    app.use('/login',(req,res)=>
+    app.use('/login',async (req,res)=>
     {
       if(req.body.username==process.env.secret_key && req.body.password==process.env.password){
-        res.status(res.statusCode).json({
-          "message": "login",
-      })
+
+        const token = await jwt.sign({Role:'admin'},process.env.tokenpassword,{ expiresIn: "15d" }, (err, token) => {
+          res.status(res.statusCode).json({
+              message:'login succeeded',
+              role:'admin',
+              token:token           
+           })
+       })
       }else{
         res.status(res.statusCode).json({
           "message": "mdp incorect",

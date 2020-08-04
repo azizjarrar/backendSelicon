@@ -2,7 +2,6 @@ const mongoose = require('mongoose')
 const tier1   = require('../models/tier1')
 const tier2   = require('../models/tier2')
 const item =require('../models/item')
-
 const fs = require('fs')
 try{
     exports.Itemadd=(req,res)=>{
@@ -48,12 +47,20 @@ try{
                     res.status(res.statusCode).json({
                         data: result,
                     })
+                }).catch((e)=>{
+                    res.status(res.statusCode).json({
+                        error:e.message
+                    })
                 })
             }else{
     
                 const data = await item.find({tier1id:req.body.tier1id,tier2id:req.body.tier2id}).exec().then((result)=>{
                     res.status(res.statusCode).json({
                         data: result,
+                    })
+                }).catch((e)=>{
+                    res.status(res.statusCode).json({
+                        error:e.message
                     })
                 })
             }
@@ -103,6 +110,10 @@ try{
                             })
                         }
       
+                    }).catch((e)=>{
+                        res.status(res.statusCode).json({
+                            error:e.message
+                        })
                     })
             }else{
                 tier1.findOneAndUpdate({_id:req.body.tier1id},{$pull:{tier2:req.body.tier2id}}).then(async (result)=>{
@@ -130,6 +141,10 @@ try{
                             })
                     }
     
+                }).catch((e)=>{
+                    res.status(res.statusCode).json({
+                        error:e.message
+                    })
                 })
     
     
@@ -141,8 +156,40 @@ try{
             res.status(res.statusCode).json({
                 data: result,
             })
+        }).catch((e)=>{
+            res.status(res.statusCode).json({
+                error:e.message
+            })
+        })
+    }
+
+    exports.searchOneItem=(req,res)=>{
+        item.findOne({_id:req.body.id}).exec().then((result)=>{
+            res.status(res.statusCode).json({
+                data: result,
+            })
+        }).catch((e)=>{
+            res.status(res.statusCode).json({
+                error:e.message
+            })
         })
     }
 }catch(e){
-    console.log(e.message)
+  
+        res.status(res.statusCode).json({
+            error:e.message
+        })
+
+}
+
+exports.deleteOneItem=(req,res)=>{
+    item.findOneAndRemove({_id:req.body.id}).exec().then((result)=>{
+        res.status(res.statusCode).json({
+            data: 'element supprime',
+        })
+    }).catch((e)=>{
+        res.status(res.statusCode).json({
+            error:e.message
+        })
+    })
 }

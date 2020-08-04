@@ -5,10 +5,11 @@ module.exports = (req, res, next) => {
     /**get token from header */
     let token = req.headers['x-access-token'] || req.headers['authorization'];
     /******************* */
+    //console.log(req.headers['authorization'])
     try {
         if (token.startsWith('Bearer ')) {
             token = token.slice(7, token.length);
-                const decoded = jwt.verify(token, process.env.secret_key)
+                const decoded = jwt.verify(token, process.env.tokenpassword)
                 req.verified = decoded
                 next()
             }

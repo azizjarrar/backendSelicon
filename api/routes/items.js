@@ -4,6 +4,7 @@ const multer = require('multer')
 const path = require('path')
 var fs = require('fs')
 var mkdirp = require('mkdirp');
+const middelware = require('../middelware/chack_auth')
 
 const router = express.Router()
 const item_controler = require('../controllers/itemS')
@@ -39,8 +40,10 @@ function checkUploadPath(req, res, next) {
        }
     })
 }
-router.post('/Itemadd',checkUploadPath,uploadMulter.single('file'),item_controler.Itemadd)
-router.post('/Itemdelete',item_controler.Itemdelete)
+router.post('/Itemadd',middelware,checkUploadPath,uploadMulter.single('file'),item_controler.Itemadd)
+router.post('/Itemdelete',middelware,item_controler.Itemdelete)
 router.post('/getItemsSelection',item_controler.getItemsSelection)
 router.post('/searchByword',item_controler.searchByword)
+router.post('/searchOneItem',item_controler.searchOneItem)
+router.post('/deleteOneItem',middelware,item_controler.deleteOneItem)
 module.exports = router
