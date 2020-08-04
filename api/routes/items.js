@@ -30,7 +30,7 @@ function checkUploadPath(req, res, next) {
        }
        else {
         mkdirp('./uploads/Medias').then(data=>{
-            console.log(data)
+           
             next();
         }).catch(error=>{
             console.log('Error in folder creation='+error.message);

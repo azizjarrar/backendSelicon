@@ -3,8 +3,11 @@ const tier2   = require('../models/tier2')
 const silicon = require('../models/silicon')
 const plastic = require('../models/plastic')
 const mongoose = require('mongoose')
+try{
+
+
 exports.getTier1=(req,res)=>{
-    console.log("/*************************/")
+
 
     console.log(req.body.section)
     tier1.find({type:req.body.section}).exec().then((result)=>{
@@ -31,7 +34,7 @@ exports.AaddTier1=async (req,res)=>{
         type:section
     })
     if(section=="silicon"){
-      const check =  await silicon.findOne({name:'silicon'}).exec()
+      const check =  await silicon.findOne({name:'silicon'}).exec().catch((e)=>console.log(e.message))
       if(check==null){
           const siliconClass = new silicon({
               _id:new mongoose.Types.ObjectId,
@@ -50,7 +53,7 @@ exports.AaddTier1=async (req,res)=>{
           const createSiclion = await siliconClass.save().then()
 
       }else{
-        let aaa = silicon.findOneAndUpdate({name:'silicon'},{$push:{tier1id:TierClass._id}},{new: true}).exec()
+        let aaa = silicon.findOneAndUpdate({name:'silicon'},{$push:{tier1id:TierClass._id}},{new: true}).exec().catch((e)=>console.log(e.message))
   
         TierClass.save().then((result)=>{
             res.status(200).json({
@@ -63,7 +66,7 @@ exports.AaddTier1=async (req,res)=>{
         })
       }
     }else{
-        const check =  await plastic.findOne({name:'plastic'}).then()
+        const check =  await plastic.findOne({name:'plastic'}).then().catch((e)=>console.log(e.message))
         if(check==null){
             const plasticClass = new plastic({
                 _id:new mongoose.Types.ObjectId,
@@ -82,7 +85,7 @@ exports.AaddTier1=async (req,res)=>{
             const createplastic = await plasticClass.save().then()
  
     }else{
-        plastic.findOneAndUpdate({name:'plastic'},{$push:{tier1id:TierClass._id}},{new: true}).exec()
+        plastic.findOneAndUpdate({name:'plastic'},{$push:{tier1id:TierClass._id}},{new: true}).exec().catch((e)=>console.log(e.message))
         TierClass.save().then((result)=>{
             res.status(200).json({
                 message: "tier saved",
@@ -109,12 +112,12 @@ exports.DaddTier1=(req,res)=>{
     const id=req.body.id
     tier1.findOneAndRemove({_id:id}).then((result)=>{
         if(result.type=="plastic"){
-             plastic.findOneAndUpdate({name:'plastic'},{$pull:{tier1id:result._id}},{new: true}).exec()
+             plastic.findOneAndUpdate({name:'plastic'},{$pull:{tier1id:result._id}},{new: true}).exec().catch((e)=>console.log(e.message))
              res.status(200).json({
                 message: "deleted",
             })
         }else{
-             silicon.findOneAndUpdate({name:'silicon'},{$pull:{tier1id:result._id}},{new: true}).exec()
+             silicon.findOneAndUpdate({name:'silicon'},{$pull:{tier1id:result._id}},{new: true}).exec().catch((e)=>console.log(e.message))
              res.status(200).json({
                 message: "deleted",
             })
@@ -154,12 +157,12 @@ exports.DaddTier2=(req,res)=>{
     const name=req.body.name
     tier2.findOneAndRemove({name:name}).then((result)=>{
         if(result.type=="plastic"){
-             plastic.findOneAndUpdate({name:'plastic'},{$pull:{tier2id:result._id}},{new: true}).exec()
+             plastic.findOneAndUpdate({name:'plastic'},{$pull:{tier2id:result._id}},{new: true}).exec().catch((e)=>console.log(e.message))
              res.status(200).json({
                 message: "deleted",
             })
         }else{
-             silicon.findOneAndUpdate({name:'silicon'},{$pull:{tier2id:result._id}},{new: true}).exec()
+             silicon.findOneAndUpdate({name:'silicon'},{$pull:{tier2id:result._id}},{new: true}).exec().catch((e)=>console.log(e.message))
              res.status(200).json({
                 message: "deleted",
             })
@@ -170,80 +173,6 @@ exports.DaddTier2=(req,res)=>{
 }
 
 
-/******************ena rani hne ***************** */
-
-/*
-const TierClass = new tier2({
-    _id: new mongoose.Types.ObjectId(),
-    name,
-    type:'silicon'
-})
-if(section=="silicon"){
-  const check =  await silicon.findOne({name:'silicon'}).exec()
-  if(check==null){
-      const siliconClass = new silicon({
-          _id:new mongoose.Types.ObjectId,
-          name:'silicon',
-          tier1id:[],
-          tier2id:[TierClass._id]
-      })
-      TierClass.save().then((result)=>{
-        res.status(200).json({
-            message: "tier saved",
-        })
-    }).catch((err)=>{
-        res.status(200).json({
-            message: err.message,
-        })
-    })
-      const createSiclion = await siliconClass.save().then()
-
-  }else{
-    let aaa = silicon.findOneAndUpdate({name:'silicon'},{$push:{tier2id:TierClass._id}},{new: true}).exec()
-
-    TierClass.save().then((result)=>{
-        res.status(200).json({
-            message: "tier saved",
-        })
-    }).catch((err)=>{
-        res.status(200).json({
-            message: err.message,
-        })
-    })
-  }
-}else{
-    const check =  await plastic.findOne({name:'plastic'}).then()
-    if(check==null){
-        
-        const plasticClass = new plastic({
-            _id:new mongoose.Types.ObjectId,
-            name:'plastic',
-            tier1id:[],
-            tier2id:[TierClass._id]
-        })
-        TierClass.save().then((result)=>{
-            res.status(200).json({
-                message: "tier saved",
-            })
-        }).catch((err)=>{
-            res.status(200).json({
-                message: err.message,
-            })
-        })
-        const createplastic = await plasticClass.save().then()
-
-}else{
-    plastic.findOneAndUpdate({name:'plastic'},{$push:{tier2id:TierClass._id}},{new: true}).exec()
-    TierClass.save().then((result)=>{
-        res.status(200).json({
-            message: "tier saved",
-        })
-    }).catch((err)=>{
-        res.status(200).json({
-            message: err.message,
-        })
-    })
+}catch(e){
+    console.log(e.message)
 }
-
-}
-*/

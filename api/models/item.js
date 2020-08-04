@@ -6,6 +6,7 @@ const item = mongoose.Schema({
     url:{type:String},
     Description:{type:String},
     tier1id:{type:mongoose.Schema.Types.ObjectId,ref:'tier1'},
-    tier2id:{type:mongoose.Schema.Types.ObjectId,ref:'tier2'}
+    tier2id:{type:mongoose.Schema.Types.ObjectId,ref:'tier2'},
+    table:{type:Object}
 })
 module.exports=mongoose.model('item',item)
