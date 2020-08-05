@@ -72,10 +72,12 @@ try{
         const silicon = require('../models/silicon')
         const plastic = require('../models/plastic')
         if(req.body.tier1id===undefined || req.body.tier1id.length===0){
+            
             res.status(res.statusCode).json({
                 message:"no data given"
             })
         }else{
+            
             if(req.body.tier2id===undefined || req.body.tier2id==="None"){
                     tier1.findByIdAndRemove({_id:req.body.tier1id}).then(async (result)=>{
                         if(result==null){
@@ -116,6 +118,7 @@ try{
                         })
                     })
             }else{
+             
                 tier1.findOneAndUpdate({_id:req.body.tier1id},{$pull:{tier2:req.body.tier2id}}).then(async (result)=>{
                     if(result==null){
                         res.status(res.statusCode).json({
