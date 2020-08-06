@@ -57,6 +57,40 @@ mongoose.connect(
       }
 
     })
+    app.use('/sendEmail',async (req,res)=>{
+     
+      var nodemailer = require('nodemailer');
+
+      var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: 'tripelbil@gmail.com',
+          pass: 'Jarrar280198'
+        }
+      });
+      
+      var mailOptions = {
+        from: `${req.body.Nom} ${req.body.prenom}`,
+        to: 'azizjarrar@gmail.com',
+        subject: 'Sending Email',
+        text: `
+        Tel:${req.body.Telephone} 
+        Email:${req.body.Email}
+        Subject:${req.body.textArea}`
+      };
+      
+      transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+          res.status(res.statusCode).json({
+            "message": error,
+        })
+        } else {
+          res.status(res.statusCode).json({
+            "message": "Email sent",
+        })
+        }
+      });
+    })
     app.use((req, res) => {
       res.status(404).json({ error: "pagenotfound" });
     });
