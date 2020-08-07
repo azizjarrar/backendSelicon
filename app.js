@@ -10,6 +10,7 @@ const tier_route = require('./api/routes/tier')
 const items = require('./api/routes/items')
 const pass ="silcion123"
 const url ="mongodb+srv://silcion:"+pass+"@cluster0.xawtq.mongodb.net/<dbname>?retryWrites=true&w=majority";
+/*******gzzegz */
 mongoose.connect(
   url,
   { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true },
@@ -70,10 +71,11 @@ mongoose.connect(
       });
       
       var mailOptions = {
-        from: `${req.body.Nom} ${req.body.prenom}`,
-        to: 'azizjarrar@gmail.com',
+        from: `${req.body.Email}`,
+        to: 'samehtechnique@measilicone.com',
         subject: 'Sending Email',
         text: `
+        Nom Prenom:${req.body.Nom} ${req.body.prenom}
         Tel:${req.body.Telephone} 
         Email:${req.body.Email}
         Subject:${req.body.textArea}`
