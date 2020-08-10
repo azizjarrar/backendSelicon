@@ -24,7 +24,9 @@ try{
                 url:req.file.path,
                 tier1id:req.body.tier1id,
                 tier2id:req.body.tier2id,
-                Description:req.body.Description
+                Description:req.body.Description,
+                table:JSON.parse(req.body.table)
+
             })
         }
     
@@ -69,8 +71,8 @@ try{
     
     }
     exports.Itemdelete=(req,res)=>{
-        const silicon = require('../models/silicon')
-        const plastic = require('../models/plastic')
+        const Silicone = require('../models/Silicone')
+        const Caoutchouc = require('../models/Caoutchouc')
         if(req.body.tier1id===undefined || req.body.tier1id.length===0){
             
             res.status(res.statusCode).json({
@@ -85,10 +87,10 @@ try{
                                 message:" data not found"
                             })
                         }else{
-                            if(result.type=="silicon"){
-                                silicon.findOneAndUpdate({name:'silicon'},{$pull:{tier1id:req.body.tier1id}}).exec()
+                            if(result.type=="Silicone"){
+                                Silicone.findOneAndUpdate({name:'Silicone'},{$pull:{tier1id:req.body.tier1id}}).exec()
                             }else{
-                                plastic.findOneAndUpdate({name:'plastic'},{$pull:{tier1id:req.body.tier1id}}).exec()
+                                Caoutchouc.findOneAndUpdate({name:'Caoutchouc'},{$pull:{tier1id:req.body.tier1id}}).exec()
                             }
                             var tier2remove =  await result.tier2.map((e)=>{
                                 return tier2.findByIdAndRemove({_id:e._id}).then(()=>{

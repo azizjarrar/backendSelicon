@@ -1,7 +1,7 @@
 const tier1   = require('../models/tier1')
 const tier2   = require('../models/tier2')
-const silicon = require('../models/silicon')
-const plastic = require('../models/plastic')
+const Silicone = require('../models/Silicone')
+const Caoutchouc = require('../models/Caoutchouc')
 const mongoose = require('mongoose')
 try{
 
@@ -37,16 +37,16 @@ exports.AaddTier1=async (req,res)=>{
         name,
         type:section
     })
-    if(section=="silicon"){
-      const check =  await silicon.findOne({name:'silicon'}).exec().catch((e)=>{
+    if(section=="Silicone"){
+      const check =  await Silicone.findOne({name:'Silicone'}).exec().catch((e)=>{
         res.status(res.statusCode).json({
             error:e.message
         })
     })
       if(check==null){
-          const siliconClass = new silicon({
+          const siliconeClass = new Silicone({
               _id:new mongoose.Types.ObjectId,
-              name:'silicon',
+              name:'Silicone',
               tier1id:[TierClass._id],
           })
           TierClass.save().then((result)=>{
@@ -58,10 +58,10 @@ exports.AaddTier1=async (req,res)=>{
                 error:e.message
             })
         })
-          const createSiclion = await siliconClass.save().then()
+          const createSiclion = await siliconeClass.save().then()
 
       }else{
-        let aaa = silicon.findOneAndUpdate({name:'silicon'},{$push:{tier1id:TierClass._id}},{new: true}).exec().catch((e)=>{
+        let aaa = Silicone.findOneAndUpdate({name:'Silicone'},{$push:{tier1id:TierClass._id}},{new: true}).exec().catch((e)=>{
             res.status(res.statusCode).json({
                 error:e.message
             })
@@ -78,15 +78,15 @@ exports.AaddTier1=async (req,res)=>{
         })
       }
     }else{
-        const check =  await plastic.findOne({name:'plastic'}).then().catch((e)=>{
+        const check =  await Caoutchouc.findOne({name:'Caoutchouc'}).then().catch((e)=>{
             res.status(res.statusCode).json({
                 error:e.message
             })
         })
         if(check==null){
-            const plasticClass = new plastic({
+            const CaoutchoucClass = new Caoutchouc({
                 _id:new mongoose.Types.ObjectId,
-                name:'plastic',
+                name:'Caoutchouc',
                 tier1id:[TierClass._id],
             })
             TierClass.save().then((result)=>{
@@ -98,10 +98,10 @@ exports.AaddTier1=async (req,res)=>{
                     error:e.message
                 })
             })
-            const createplastic = await plasticClass.save().then()
+            const createCaoutchouc = await CaoutchoucClass.save().then()
  
     }else{
-        plastic.findOneAndUpdate({name:'plastic'},{$push:{tier1id:TierClass._id}},{new: true}).exec().catch((e)=>{
+        Caoutchouc.findOneAndUpdate({name:'Caoutchouc'},{$push:{tier1id:TierClass._id}},{new: true}).exec().catch((e)=>{
             res.status(res.statusCode).json({
                 error:e.message
             })
@@ -135,8 +135,8 @@ exports.MaddTier1=(req,res)=>{
 exports.DaddTier1=(req,res)=>{
     const id=req.body.id
     tier1.findOneAndRemove({_id:id}).then((result)=>{
-        if(result.type=="plastic"){
-             plastic.findOneAndUpdate({name:'plastic'},{$pull:{tier1id:result._id}},{new: true}).exec().catch((e)=>{
+        if(result.type=="Caoutchouc"){
+             Caoutchouc.findOneAndUpdate({name:'Caoutchouc'},{$pull:{tier1id:result._id}},{new: true}).exec().catch((e)=>{
                 res.status(res.statusCode).json({
                     error:e.message
                 })
@@ -145,7 +145,7 @@ exports.DaddTier1=(req,res)=>{
                 message: "deleted",
             })
         }else{
-             silicon.findOneAndUpdate({name:'silicon'},{$pull:{tier1id:result._id}},{new: true}).exec().catch((e)=>{
+             Silicone.findOneAndUpdate({name:'Silicone'},{$pull:{tier1id:result._id}},{new: true}).exec().catch((e)=>{
                 res.status(res.statusCode).json({
                     error:e.message
                 })
@@ -198,13 +198,13 @@ exports.MaddTier2=(req,res)=>{
 exports.DaddTier2=(req,res)=>{
     const name=req.body.name
     tier2.findOneAndRemove({name:name}).then((result)=>{
-        if(result.type=="plastic"){
-             plastic.findOneAndUpdate({name:'plastic'},{$pull:{tier2id:result._id}},{new: true}).exec().catch((e)=>console.log(e.message))
+        if(result.type=="Caoutchouc"){
+             Caoutchouc.findOneAndUpdate({name:'Caoutchouc'},{$pull:{tier2id:result._id}},{new: true}).exec().catch((e)=>console.log(e.message))
              res.status(res.statusCode).json({
                 message: "deleted",
             })
         }else{
-             silicon.findOneAndUpdate({name:'silicon'},{$pull:{tier2id:result._id}},{new: true}).exec().catch((e)=>console.log(e.message))
+             Silicone.findOneAndUpdate({name:'Silicone'},{$pull:{tier2id:result._id}},{new: true}).exec().catch((e)=>console.log(e.message))
              res.status(res.statusCode).json({
                 message: "deleted",
             })
