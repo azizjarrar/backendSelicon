@@ -15,17 +15,22 @@ try{
                 tier1id:req.body.tier1id,
                 tier2id:null,
                 Description:req.body.Description,
-                table:JSON.parse(req.body.table)
+                nameEng:req.body.nameEng,
+                DescriptionEng:req.body.DescriptionEng,
+                bigDescriptionEng:req.body.bigDescriptionEng,
             })
         }else{
             itemClass = new item({
                 _id:new mongoose.Types.ObjectId,
-                name:req.body.name,
                 url:req.file.path,
                 tier1id:req.body.tier1id,
                 tier2id:req.body.tier2id,
                 Description:req.body.Description,
-                table:JSON.parse(req.body.table)
+                name:req.body.name,
+                bigDescription:req.body.bigDescription,
+                nameEng:req.body.nameEng,
+                DescriptionEng:req.body.DescriptionEng,
+                bigDescriptionEng:req.body.bigDescriptionEng,
 
             })
         }

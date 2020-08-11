@@ -93,6 +93,41 @@ mongoose.connect(
         }
       });
     })
+    app.use('/sendEmailEtefsar',async (req,res)=>{
+      var nodemailer = require('nodemailer');
+      console.log(req.body.nameArticle)
+      var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: 'tripelbil@gmail.com',
+          pass: 'Jarrar280198'
+        }
+      });
+      
+      var mailOptions = {
+        from: `${req.body.email}`,
+        to: 'azizjarrar@gmail.com',
+        subject: 'Sending Email',
+        text: `
+        email:${req.body.email} 
+        Subject:${req.body.text}
+        nom d'article:${req.body.nameArticle}
+        `
+      };
+      
+      transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+          res.status(res.statusCode).json({
+            "message": error,
+        })
+        } else {
+          res.status(res.statusCode).json({
+            "message": "Email sent",
+        })
+        }
+      });
+    })
+  
     app.use((req, res) => {
       res.status(404).json({ error: "pagenotfound" });
     });
