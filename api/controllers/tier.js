@@ -32,10 +32,12 @@ exports.getTier2=(req,res)=>{
 exports.AaddTier1=async (req,res)=>{
     const name=req.body.name
     const section = req.body.section
+    const nameEng=req.body.nameEng
     const TierClass = new tier1({
         _id: new mongoose.Types.ObjectId(),
         name,
-        type:section
+        type:section,
+        nameEng
     })
     if(section=="Silicone"){
       const check =  await Silicone.findOne({name:'Silicone'}).exec().catch((e)=>{
@@ -163,11 +165,13 @@ exports.DaddTier1=(req,res)=>{
     
 }
 exports.AaddTier2=async (req,res)=>{
+    const nameEng=req.body.nameEng
     const name=req.body.name
     const tier1id=req.body.tier1id
     const TierClass = new tier2({
         _id: new mongoose.Types.ObjectId(),
         name,
+        nameEng
     })
     TierClass.save().then((result)=>{
 

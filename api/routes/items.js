@@ -46,4 +46,5 @@ router.post('/getItemsSelection',item_controler.getItemsSelection)
 router.post('/searchByword',item_controler.searchByword)
 router.post('/searchOneItem',item_controler.searchOneItem)
 router.post('/deleteOneItem',middelware,item_controler.deleteOneItem)
+router.post('/UpdateVu',middelware,item_controler.UpdateVu)
 module.exports = router

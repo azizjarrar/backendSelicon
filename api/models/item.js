@@ -10,6 +10,7 @@ const item = mongoose.Schema({
     DescriptionEng:{type:String},
     bigDescriptionEng:{type:String},
     tier1id:{type:mongoose.Schema.Types.ObjectId,ref:'tier1'},
-    tier2id:{type:mongoose.Schema.Types.ObjectId,ref:'tier2'}
+    tier2id:{type:mongoose.Schema.Types.ObjectId,ref:'tier2'},
+    Vu:{type:String,default:0}
 })
 module.exports=mongoose.model('item',item)

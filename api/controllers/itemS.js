@@ -10,12 +10,13 @@ try{
         if(req.body.tier2id=="None"){
              itemClass = new item({
                 _id:new mongoose.Types.ObjectId,
-                name:req.body.name,
+                name:req.body.name.toUpperCase(),
                 url:req.file.path,
                 tier1id:req.body.tier1id,
                 tier2id:null,
                 Description:req.body.Description,
-                nameEng:req.body.nameEng,
+                bigDescription:req.body.bigDescription,
+                nameEng:req.body.nameEng.toUpperCase(),
                 DescriptionEng:req.body.DescriptionEng,
                 bigDescriptionEng:req.body.bigDescriptionEng,
             })
@@ -26,9 +27,9 @@ try{
                 tier1id:req.body.tier1id,
                 tier2id:req.body.tier2id,
                 Description:req.body.Description,
-                name:req.body.name,
+                name:req.body.name.toUpperCase(),
                 bigDescription:req.body.bigDescription,
-                nameEng:req.body.nameEng,
+                nameEng:req.body.nameEng.toUpperCase(),
                 DescriptionEng:req.body.DescriptionEng,
                 bigDescriptionEng:req.body.bigDescriptionEng,
 
@@ -50,7 +51,6 @@ try{
             if(req.body.tier2id===undefined || req.body.tier2id==="None"){
       
                 const data = await item.find({tier1id:req.body.tier1id,tier2id:null}).exec().then((result)=>{
-                    console.log("data ray="+result)
                     res.status(res.statusCode).json({
                         data: result,
                     })
@@ -135,7 +135,6 @@ try{
                              await  tier2.findOneAndRemove({_id:req.body.tier2id}).then( (result)=>{})
     
                             const itemsdata = await item.find({tier2id:req.body.tier2id}).exec()
-                            console.log(itemsdata)
                             itemsdata.map((e)=>{
                                 try {
                                     fs.unlinkSync(e.url)
@@ -162,7 +161,7 @@ try{
         }
     }
     exports.searchByword=async (req,res)=>{
-        const data = await item.find({name:{ $regex: `.*${req.body.word}.*` }}).exec().then((result)=>{
+        const data = await item.find({$or:[{name:req.body.word.toUpperCase()},{nameEng:req.body.word.toUpperCase()}]}).exec().then((result)=>{
             res.status(res.statusCode).json({
                 data: result,
             })
@@ -194,12 +193,22 @@ try{
 
 exports.deleteOneItem=(req,res)=>{
     item.findOneAndRemove({_id:req.body.id}).exec().then((result)=>{
+        fs.unlinkSync(result.url)
         res.status(res.statusCode).json({
             data: 'element supprime',
         })
     }).catch((e)=>{
         res.status(res.statusCode).json({
             error:e.message
+        })
+    })
+}
+exports.UpdateVu=(req,res)=>{
+    item.findOne({_id:req.body.id}).exec().then((result)=>{
+        item.findOneAndUpdate({_id:req.body.id},{$set:{Vu:(result.Vu*1)+1}}).exec().then((result)=>{
+            res.status(res.statusCode).json({
+                message:'Vu update'
+            })
         })
     })
 }
