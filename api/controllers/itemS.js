@@ -161,15 +161,36 @@ try{
         }
     }
     exports.searchByword=async (req,res)=>{
-        const data = await item.find({$or:[{name:req.body.word.toUpperCase()},{nameEng:req.body.word.toUpperCase()}]}).exec().then((result)=>{
+        console.log(req.body.word)
+        if(req.body.word.length!=0){
+            if(req.body.lang==="fr"){
+                const data = await item.find({name:{$regex: `.*${req.body.word.toUpperCase()}.*` }}).limit(10).exec().then((result)=>{
+                     res.status(res.statusCode).json({
+                         data: result,
+                     })
+                 }).catch((e)=>{
+                     res.status(res.statusCode).json({
+                         error:e.message
+                     })
+                 })
+            }else{
+                const data = await item.find({nameEng:{$regex: `.*${req.body.word.toUpperCase()}.*` }}).limit(10).exec().then((result)=>{
+                     res.status(res.statusCode).json({
+                         data: result,
+                     })
+                 }).catch((e)=>{
+                     res.status(res.statusCode).json({
+                         error:e.message
+                     })
+                 })
+            }
+        }else{
             res.status(res.statusCode).json({
-                data: result,
+                data: 'no data given',
             })
-        }).catch((e)=>{
-            res.status(res.statusCode).json({
-                error:e.message
-            })
-        })
+        }
+
+
     }
 
     exports.searchOneItem=(req,res)=>{
