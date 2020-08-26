@@ -9,10 +9,11 @@ ENV.config();
 const tier_route = require('./api/routes/tier')
 const items = require('./api/routes/items')
 const pass ="silcion123"
+const url1="mongodb://localhost:27017/selicon"
 const url ="mongodb+srv://silcion:"+pass+"@cluster0.xawtq.mongodb.net/<dbname>?retryWrites=true&w=majority";
 /*******gzzegz */
 mongoose.connect(
-  url,
+  url1,
   { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true },
   async (err, cl) => {
     if (err) {

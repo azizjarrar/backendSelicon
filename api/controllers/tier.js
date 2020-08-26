@@ -1,5 +1,4 @@
 const tier1   = require('../models/tier1')
-const tier2   = require('../models/tier2')
 const Silicone = require('../models/Silicone')
 const Caoutchouc = require('../models/Caoutchouc')
 const mongoose = require('mongoose')
@@ -10,34 +9,25 @@ exports.getTier1=(req,res)=>{
 
 
   
-    tier1.find({type:req.body.section}).exec().then((result)=>{
+    tier1.find({type:req.body.section,ECD:req.body.ECD}).exec().then((result)=>{
         res.status(res.statusCode).json({
             data:result,
             message: "all tier" +req.body.section,
         })
     })
 }
-exports.getTier2=(req,res)=>{
-    tier1.find({_id:req.body.id}).populate({ path: 'tier2'}).exec().then((result)=>{
-        res.status(res.statusCode).json({
-            data:result,
-            message: "all tier",
-        })
-    }).catch((e)=>{
-        res.status(res.statusCode).json({
-            error:e.message
-        })
-    })
-}
+
 exports.AaddTier1=async (req,res)=>{
     const name=req.body.name
     const section = req.body.section
     const nameEng=req.body.nameEng
+    const ECD=req.body.ECD
     const TierClass = new tier1({
         _id: new mongoose.Types.ObjectId(),
         name,
         type:section,
-        nameEng
+        nameEng,
+        ECD
     })
     if(section=="Silicone"){
       const check =  await Silicone.findOne({name:'Silicone'}).exec().catch((e)=>{

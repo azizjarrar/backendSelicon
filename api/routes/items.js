@@ -43,7 +43,6 @@ function checkUploadPath(req, res, next) {
 router.post('/Itemadd',middelware,checkUploadPath,uploadMulter.single('file'),item_controler.Itemadd)
 router.post('/Itemdelete',middelware,item_controler.Itemdelete)
 router.post('/getItemsSelection',item_controler.getItemsSelection)
-router.post('/searchByword',item_controler.searchByword)
 router.post('/searchOneItem',item_controler.searchOneItem)
 router.post('/deleteOneItem',middelware,item_controler.deleteOneItem)
 router.post('/UpdateVu',middelware,item_controler.UpdateVu)
