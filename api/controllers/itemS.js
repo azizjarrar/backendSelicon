@@ -134,3 +134,22 @@ exports.UpdateVu=(req,res)=>{
         })
     })
 }
+exports.itemUpdate=(req,res)=>{
+    if(req.file!=undefined){
+        item.findOneAndUpdate({_id:req.body.id},{$set:{url:req.file.path,name:req.body.name,Description:req.body.Description,bigDescription:req.body.bigDescription,nameEng:req.body.nameEng,DescriptionEng:req.body.DescriptionEng,bigDescriptionEng:req.body.bigDescriptionEng},}).exec().then((result)=>{
+            fs.unlinkSync(result.url)
+            
+            res.status(res.statusCode).json({
+                message:'Vu update'
+            })
+        })
+    }else{
+        item.findOneAndUpdate({_id:req.body.id},{$set:{name:req.body.name,Description:req.body.Description,bigDescription:req.body.bigDescription,nameEng:req.body.nameEng,DescriptionEng:req.body.DescriptionEng,bigDescriptionEng:req.body.bigDescriptionEng}}).exec().then((result)=>{
+            res.status(res.statusCode).json({
+                message:'Vu update'
+            })
+        })
+    }
+
+}
+
